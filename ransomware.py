@@ -2,7 +2,9 @@ import os
 import sys
 import base64
 import logging
+import pyperclip
 
+LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 class RansomWare:
     def __init__(self, name):
@@ -78,12 +80,64 @@ class RansomWare:
             self.decrypt_a_file(key, file)
         print("You saved your files, it's a miracle")
 
+
+
+
+    #Nuevo algoritmo de encriptamiento 
+    def encryptMessage(self, key, message):
+        return self.translateMessage(key, message, 'encrypt')
+    def decryptMessage(self, key, message):
+        return self.translateMessage(key, message, 'decrypt')
+    
+    def translateMessage(self, key, message, mode):
+        translated = [] # stores the encrypted/decrypted message string
+        keyIndex = 0
+        key = key.upper()
+    
+        for symbol in message:
+            num = LETTERS.find(symbol.upper())
+            if num != -1:
+                if mode == 'encrypt':
+                    num += LETTERS.find(key[keyIndex])
+                elif mode == 'decrypt':
+                    num -= LETTERS.find(key[keyIndex])
+                num %= len(LETTERS)
+                
+                if symbol.isupper():
+                    translated.append(LETTERS[num])
+                elif symbol.islower():
+                    translated.append(LETTERS[num].lower())
+                keyIndex += 1
+                
+                if keyIndex == len(key):
+                    keyIndex = 0
+            else:
+                translated.append(symbol)
+        return ''.join(translated)
+
+    
+
+
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
 
     ransom = RansomWare('PruebaRansomWare')
-    path = os.path.dirname(os.path.abspath(__file__))
-    number_of_files = ransom.encrypt_files(path)
-    print("Number of encrypted files: {}".format(number_of_files))
+    myMessage = "This is basic implementation of Vignere Cipher"
+    Key="holasoygerman"
+    
+    cripto = ransom.encryptMessage(Key, myMessage)
+    print(cripto)
+    
+    while True:
+        key2 = ransom.enter_key()
+        decripto = ransom.decryptMessage(key2, myMessage)
+        print(decripto)
+        if decripto==myMessage:
+            break
 
-    ransom.decrypt_files(path)
+    #ransom = RansomWare('PruebaRansomWare')
+    #logging.basicConfig(level=logging.DEBUG)
+    #path = os.path.dirname(os.path.abspath(__file__))
+    #number_of_files = ransom.encrypt_files(path)
+    #print("Number of encrypted files: {}".format(number_of_files))
+
+    #ransom.decrypt_files(path)
