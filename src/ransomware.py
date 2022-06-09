@@ -5,6 +5,7 @@ import sys
 # Algorithm engines
 from vignere_cipher import vignere_cipher
 from key_engine import generate_random_key, generate_key_combinations
+from cpu_stats import cpu_usage
 
 
 def name_backup(filename):
@@ -41,6 +42,7 @@ def encrypt(filename, key_len):
         f.write(str(encrypted_content))
 
 
+@cpu_usage
 def decrypt_bf(filename, key_len):
     """
     It reads the encrypted file, reads the original file, and then tries every possible key combination
@@ -74,6 +76,8 @@ def main():
 
     encrypt(filename, key_len)
     decrypt_bf(filename, key_len)
+
+    os.remove(name_backup(filename))
 
 
 if __name__ == '__main__':
