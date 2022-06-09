@@ -1,0 +1,51 @@
+------------------------------------------------------------
+Encrypting with key of size: 1
+Generated key: O
+Proven key: O ... [15/26]
+Decrypted with key: O
+------------------------------------------------------------
+Elapsed time: 0:00:00.007055 sec
+CPU %: 33.3 %
+CPU STATS: scpustats(ctx_switches=143595101, interrupts=16236206, soft_interrupts=24976452, syscalls=0)
+RAM usage: 28.9 %
+------------------------------------------------------------
+Encrypting with key of size: 2
+Generated key: VP
+Proven key: VP ... [562/676]
+Decrypted with key: VP
+------------------------------------------------------------
+Elapsed time: 0:00:00.262339 sec
+CPU %: 36.1 %
+CPU STATS: scpustats(ctx_switches=143598363, interrupts=16236693, soft_interrupts=24977270, syscalls=0)
+RAM usage: 28.8 %
+------------------------------------------------------------
+Encrypting with key of size: 3
+Generated key: MBJ
+Proven key: MBJ ... [8148/17576]
+Decrypted with key: MBJ
+------------------------------------------------------------
+Elapsed time: 0:00:03.394387 sec
+CPU %: 34.6 %
+CPU STATS: scpustats(ctx_switches=143638993, interrupts=16242033, soft_interrupts=24986236, syscalls=0)
+RAM usage: 28.7 %
+------------------------------------------------------------
+Encrypting with key of size: 4
+Generated key: LXVE
+Proven key: LXVE ... [209435/456976]
+Decrypted with key: LXVE
+------------------------------------------------------------
+Elapsed time: 0:01:28.071411 sec
+CPU %: 36.0 %
+CPU STATS: scpustats(ctx_switches=144759884, interrupts=16417666, soft_interrupts=25204576, syscalls=0)
+RAM usage: 28.4 %
+------------------------------------------------------------
+Encrypting with key of size: 5
+Generated key: XYHGU
+Proven key: XYHGU ... [10937181/11881376]
+Decrypted with key: XYHGU
+------------------------------------------------------------
+Elapsed time: 1:13:35.004681 sec
+CPU %: 32.5 %
+CPU STATS: scpustats(ctx_switches=195877720, interrupts=22624273, soft_interrupts=35567317, syscalls=0)
+RAM usage: 28.5 %
+bash run.sh  4474,74s user 30,05s system 99% cpu 1:15:07,03 total

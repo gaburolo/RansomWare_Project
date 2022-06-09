@@ -1,0 +1,51 @@
+------------------------------------------------------------
+Encrypting with key of size: 1
+Generated key: F
+Proven key: F ... [6/26]
+Decrypted with key: F
+------------------------------------------------------------
+Elapsed time: 0:00:00.003975 sec
+CPU %: 33.3 %
+CPU STATS: scpustats(ctx_switches=97101253, interrupts=10453191, soft_interrupts=15292341, syscalls=0)
+RAM usage: 29.2 %
+------------------------------------------------------------
+Encrypting with key of size: 2
+Generated key: TR
+Proven key: TR ... [512/676]
+Decrypted with key: TR
+------------------------------------------------------------
+Elapsed time: 0:00:00.254676 sec
+CPU %: 50.5 %
+CPU STATS: scpustats(ctx_switches=97104338, interrupts=10453709, soft_interrupts=15293120, syscalls=0)
+RAM usage: 29.4 %
+------------------------------------------------------------
+Encrypting with key of size: 3
+Generated key: TIY
+Proven key: TIY ... [13077/17576]
+Decrypted with key: TIY
+------------------------------------------------------------
+Elapsed time: 0:00:05.328360 sec
+CPU %: 33.1 %
+CPU STATS: scpustats(ctx_switches=97168215, interrupts=10461912, soft_interrupts=15306845, syscalls=0)
+RAM usage: 29.2 %
+------------------------------------------------------------
+Encrypting with key of size: 4
+Generated key: CWTW
+Proven key: CWTW ... [50541/456976]
+Decrypted with key: CWTW
+------------------------------------------------------------
+Elapsed time: 0:00:20.566882 sec
+CPU %: 35.1 %
+CPU STATS: scpustats(ctx_switches=97414179, interrupts=10494140, soft_interrupts=15359234, syscalls=0)
+RAM usage: 28.3 %
+------------------------------------------------------------
+Encrypting with key of size: 5
+Generated key: VJJPW
+Proven key: VJJPW ... [9761177/11881376]
+Decrypted with key: VJJPW
+------------------------------------------------------------
+Elapsed time: 1:05:54.153452 sec
+CPU %: 32.5 %
+CPU STATS: scpustats(ctx_switches=143337422, interrupts=16105178, soft_interrupts=24781077, syscalls=0)
+RAM usage: 28.7 %
+bash run.sh  3953,05s user 26,09s system 99% cpu 1:06:20,58 total
