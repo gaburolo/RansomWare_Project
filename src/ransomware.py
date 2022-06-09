@@ -36,6 +36,7 @@ def encrypt(filename, key_len):
         f.write(content)
 
     secret_key = generate_random_key(key_len)
+    print(f'Generated key: {secret_key}')
     encrypted_content, _key = vignere_cipher(content, secret_key)
 
     with open(filename, 'w') as f:
@@ -57,7 +58,11 @@ def decrypt_bf(filename, key_len):
     with open(name_backup(filename), 'r') as f:
         original_content = f.read()
 
+    count = 0
     for key in generate_key_combinations(key_len):
+        count+=1
+        print(f'Proven key: {"".join(key)} ... [{count}/{26**key_len}]')
+        sys.stdout.write('\033[F')
         decrypted_content, _key = vignere_cipher(encrypted_content, key)
         if original_content == str(decrypted_content):
             with open(filename, 'w') as f:
